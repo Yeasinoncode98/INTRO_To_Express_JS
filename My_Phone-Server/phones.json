@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "iPhone 15 Pro",
+    "price": 1200,
+    "description": "Flagship Apple smartphone with A17 chip and great camera performance.",
+    "image": "https://i.ibb.co/rdYGRXy/iphone15pro.png"
+  },
+  {
+    "id": 2,
+    "name": "Samsung Galaxy S24 Ultra",
+    "price": 1100,
+    "description": "Premium Android phone with advanced AI features and powerful zoom camera.",
+    "image": "https://i.ibb.co/Y8zW4pN/galaxy-s24ultra.png"
+  },
+  {
+    "id": 3,
+    "name": "Xiaomi Redmi Note 13 Pro",
+    "price": 350,
+    "description": "Budget-friendly phone with strong battery life and smooth performance.",
+    "image": "https://i.ibb.co/1fxSFYq/redmi-note-13pro.png"
+  },
+  {
+    "id": 4,
+    "name": "Google Pixel 8",
+    "price": 850,
+    "description": "Great camera quality and pure Android experience with fast updates.",
+    "image": "https://i.ibb.co/Ws34pWQ/pixel8.png"
+  },
+  {
+    "id": 5,
+    "name": "OnePlus 12",
+    "price": 900,
+    "description": "Fast charging, smooth display and strong performance for gamers.",
+    "image": "https://i.ibb.co/7JvX5Zd/oneplus12.png"
+  }
+]
