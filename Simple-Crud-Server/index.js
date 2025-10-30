@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 // Db Name -- SimpleDBUser
-// Db password - 4QErYRlaR14kyjmh
+// Db password - 4QErYRlaR14kyjmhi
 
 // const uri =
 //   "mongodb+srv://SimpleDBUser:<db_password>@cluster0.pkimykw.mongodb.net/?appName=Cluster0";
