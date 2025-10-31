@@ -1,9 +1,10 @@
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const port = process.env.PORT || 3000;
-
+// console.log(process.env);
 // MiddleWare (cors , express json)
 
 // URI Password
@@ -13,8 +14,10 @@ app.use(cors());
 app.use(express.json());
 
 1; // URI LINK
-const uri =
-  "mongodb+srv://smartDBUser:QWpKgnuk0v3FaQpJ@cluster0.pkimykw.mongodb.net/?appName=Cluster0";
+// const uri =
+//   "mongodb+srv://smartDBUser:QWpKgnuk0v3FaQpJ@cluster0.pkimykw.mongodb.net/?appName=Cluster0";
+
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.pkimykw.mongodb.net/?appName=Cluster0`;
 
 2; // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -43,6 +46,7 @@ async function run() {
     const bidsCollection = db.collection("bids");
     const usersCollection = db.collection("users");
 
+    // USERS API
     app.post("/users", async (req, res) => {
       const newUser = req.body;
 
@@ -57,6 +61,8 @@ async function run() {
         res.send(result);
       }
     });
+
+    // PRODUCTS API
 
     // For getting the Apps(GET)
     app.get("/products", async (req, res) => {
@@ -81,6 +87,16 @@ async function run() {
       res.send(result);
     });
 
+    // Recent products
+    app.get("/latest-products", async (req, res) => {
+      const cursor = productsCollection
+        .find()
+        .sort({ created_at: -1 })
+        .limit(6);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     // For getting a single Product
     app.get("/products/:id", async (req, res) => {
       const id = req.params.id;
@@ -97,7 +113,6 @@ async function run() {
     });
 
     // For Update Patch (patch)
-
     app.patch("/products/:id", async (req, res) => {
       const id = req.params.id;
       const updatedProduct = req.body;
@@ -132,6 +147,27 @@ async function run() {
       res.send(result);
     });
 
+    // Bids by Product
+    app.get("/products/bids/:productId", async (req, res) => {
+      const productId = req.params.productId;
+      const query = { product: productId };
+      const cursor = bidsCollection.find(query).sort({ bid_price: -1 });
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // My BIDS
+
+    app.get("/bids", async (req, res) => {
+      const query = {};
+      if (query.email) {
+        query.buyer_email = email;
+      }
+      const cursor = bidsCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     // BIDS POST
     app.post("/bids", async (req, res) => {
       const newBid = req.body;
@@ -140,6 +176,14 @@ async function run() {
     });
 
     // BIDS Delete
+    app.delete("/bids/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await bidsCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    // Delete Bids
     app.delete("/bids/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };

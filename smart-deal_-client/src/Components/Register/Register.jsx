@@ -13,7 +13,7 @@ const Register = () => {
           email: result.user.email,
           image: result.user.photoURL,
         };
-
+ 
         // Create user in DataBase
 
         fetch("http://localhost:3000/users", {

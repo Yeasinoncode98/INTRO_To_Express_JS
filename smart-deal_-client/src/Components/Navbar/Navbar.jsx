@@ -5,6 +5,10 @@ import { AuthContext } from "../../context/AuthContext";
 const Navbar = () => {
   const { user } = use(AuthContext);
 
+  // const handleSignOut = () => {
+  //   signOutUser().then().catch();
+  // };
+
   const links = (
     <>
       <li>
@@ -64,7 +68,7 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         {user ? (
-          <a className="btn">Sign Out</a>
+          <a className="btn btn-primary">Sign Out</a>
         ) : (
           <Link to="/register">Register</Link>
         )}
