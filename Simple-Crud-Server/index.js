@@ -115,4 +115,5 @@ app.listen(port, () => {
  * 4.Add a run fucntion  to connect to the Database
  * 5.Use try finally inside it to connect the client
  * 6.Ping the database to see the server is alive or not
+ * 7.Always chck the server that MONGODb  is connected or not
  */
