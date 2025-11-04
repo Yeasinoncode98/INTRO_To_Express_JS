@@ -1,3 +1,4 @@
 node_modules
 .env
 smart-deals-71dc2-firebase-adminsdk-fbsvc-170359cf31.json
+.vercel

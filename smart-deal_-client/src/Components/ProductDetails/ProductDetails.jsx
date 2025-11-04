@@ -2,6 +2,7 @@ import React, { use, useEffect, useRef, useState } from "react";
 import { useLoaderData } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const ProductDetails = () => {
   const { _id: productId } = useLoaderData();
@@ -10,19 +11,27 @@ const ProductDetails = () => {
   const { user } = use(AuthContext);
   //   console.log(product);
 
-  //   UseEffect
   useEffect(() => {
-    fetch(`http://localhost:3000/products/bids/${productId}`, {
-      headers: {
-        authoriaztion: `Bearer ${user.accessToken}`,
-      },
-    })
-      .then((res) => res.json())
+    axios
+      .get(`http://localhost:3000/products/bids/${productId}`)
       .then((data) => {
-        console.log("Bids for this products", data);
+        console.log("After axios Get", data);
         setBids(data);
       });
   }, [productId, user]);
+
+  // useEffect(() => {
+  //   fetch(`http://localhost:3000/products/bids/${productId}`, {
+  //     headers: {
+  //       authoriaztion: `Bearer ${user.accessToken}`,
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log("Bids for this products", data);
+  //       setBids(data);
+  //     });
+  // }, [productId, user]);
 
   const handleBidModalOpen = () => {
     bidModalRef.current.showModal();
@@ -156,7 +165,7 @@ const ProductDetails = () => {
               <tbody>
                 {/* row 1 */}
                 {bids.map((bid, index) => (
-                  <tr>
+                  <tr key={bid._id}>
                     <th>{index + 1}</th>
                     <td>
                       <div className="flex items-center gap-3">
