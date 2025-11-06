@@ -106,7 +106,7 @@ run().catch(console.dir);
 
 app.listen(port, () => {
   console.log(
-    `Simple Crud Server is Running on this  Port named and Totally Okay ${port}`
+    `Simple Crud Server is Running on this Port and All Is Okay ${port}`
   );
 });
 
