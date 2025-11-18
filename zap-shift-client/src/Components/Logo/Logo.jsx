@@ -15,3 +15,4 @@ const Logo = () => {
 };
 
 export default Logo;
+// from here component is exported
