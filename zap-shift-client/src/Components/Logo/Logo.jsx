@@ -1,5 +1,5 @@
 import React from "react";
-
+// Import link properly for getting logo
 import logo from "../../assets/logo.png";
 import { Link } from "react-router";
 
