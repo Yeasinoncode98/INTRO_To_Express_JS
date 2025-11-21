@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, NavLink, Outlet } from "react-router";
 import { CiDeliveryTruck } from "react-icons/ci";
-
+import { RiMotorbikeLine } from "react-icons/ri";
+import { FaCreditCard } from "react-icons/fa6";
 const DashBoardLayout = () => {
   return (
     <div className="drawer lg:drawer-open max-w-7xl mx-auto">
@@ -79,6 +80,28 @@ const DashBoardLayout = () => {
               >
                 <CiDeliveryTruck />
                 <span className="is-drawer-close:hidden">MyParcels</span>
+              </NavLink>
+            </li>
+            {/* Payment history */}
+            <li>
+              <NavLink
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Payment History"
+                to="/dashboard/payment-history"
+              >
+                <FaCreditCard />
+                <span className="is-drawer-close:hidden">Payment History</span>
+              </NavLink>
+            </li>
+
+            <li>
+              <NavLink
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Approve Riders"
+                to="/dashboard/approve-riders"
+              >
+                <RiMotorbikeLine />
+                <span className="is-drawer-close:hidden">Approve Riders</span>
               </NavLink>
             </li>
 

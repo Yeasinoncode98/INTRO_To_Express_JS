@@ -13,6 +13,8 @@ import MyParcels from "../assets/pages/Dashboard/MyParcels/MyParcels";
 import Payment from "../assets/pages/Dashboard/MyParcels/Payment/Payment";
 import PaymentSucess from "../assets/pages/Dashboard/MyParcels/Payment/PaymentSuccess";
 import Paymentcancelled from "../assets/pages/Dashboard/MyParcels/Payment/Paymentcancelled";
+import PaymentHistory from "../assets/pages/Dashboard/PaymentHistory/PaymentHistory";
+import ApproveRiders from "../assets/pages/Dashboard/ApproveRiders/ApproveRIders";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +37,7 @@ export const router = createBrowserRouter([
             <Rider></Rider>
           </PrivateRoute>
         ),
+        loader: () => fetch("/serviceCenter.json").then((res) => res.json()),
       },
       {
         path: "/send-parcel",
@@ -78,12 +81,20 @@ export const router = createBrowserRouter([
         Component: Payment,
       },
       {
+        path: "payment-history",
+        Component: PaymentHistory,
+      },
+      {
         path: "payment-success",
         Component: PaymentSucess,
       },
       {
         path: "payment-cancelled",
         Component: Paymentcancelled,
+      },
+      {
+        path: "approve-riders",
+        Component: ApproveRiders,
       },
     ],
   },
