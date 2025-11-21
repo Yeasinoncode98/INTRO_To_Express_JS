@@ -8,7 +8,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 const crypto = require("crypto");
 
-// firebase admin SDK
+// firebase admin SDK and others are okay
 
 const admin = require("firebase-admin");
 
