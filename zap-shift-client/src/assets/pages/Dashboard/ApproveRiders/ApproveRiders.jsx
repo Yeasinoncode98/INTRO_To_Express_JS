@@ -5,6 +5,7 @@ import { FaUserCheck } from "react-icons/fa";
 import { CiCircleRemove } from "react-icons/ci";
 import { FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { FaEye } from "react-icons/fa6";
 const ApproveRiders = () => {
   const axiosSecure = useAxiosSecure();
   const { refetch, data: riders = [] } = useQuery({
@@ -56,6 +57,8 @@ const ApproveRiders = () => {
               <th>Email</th>
               <th>status</th>
               <th>District</th>
+              <th>Application Status</th>
+              <th>Work Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -65,6 +68,7 @@ const ApproveRiders = () => {
                 <th>{index + 1}</th>
                 <td>{rider.Name}</td>
                 <td>{rider.email}</td>
+                <td>{rider.district}</td>
                 <td>
                   {
                     <p
@@ -78,8 +82,11 @@ const ApproveRiders = () => {
                     </p>
                   }
                 </td>
-                <td>{rider.district}</td>
+                <td>{rider.workStatus}</td>
                 <td>
+                  <button className="btn mr-3">
+                    <FaEye />
+                  </button>
                   <button
                     onClick={() => handleApproval(rider)}
                     className="btn mr-3"

@@ -3,7 +3,11 @@ import { Link, NavLink, Outlet } from "react-router";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { RiMotorbikeLine } from "react-icons/ri";
 import { FaCreditCard } from "react-icons/fa6";
+import { RiUserSearchFill } from "react-icons/ri";
+import useRole from "../Hooks/useRole";
+import { RiMotorbikeFill } from "react-icons/ri";
 const DashBoardLayout = () => {
+  const { role } = useRole();
   return (
     <div className="drawer lg:drawer-open max-w-7xl mx-auto">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -94,16 +98,47 @@ const DashBoardLayout = () => {
               </NavLink>
             </li>
 
-            <li>
-              <NavLink
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Approve Riders"
-                to="/dashboard/approve-riders"
-              >
-                <RiMotorbikeLine />
-                <span className="is-drawer-close:hidden">Approve Riders</span>
-              </NavLink>
-            </li>
+            {role === "admin" && (
+              <>
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Approve Riders"
+                    to="/dashboard/approve-riders"
+                  >
+                    <RiMotorbikeLine />
+                    <span className="is-drawer-close:hidden">
+                      Approve Riders
+                    </span>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Assign Riders"
+                    to="/dashboard/assign-riders"
+                  >
+                    <RiMotorbikeFill />
+                    <span className="is-drawer-close:hidden">
+                      Assign Riders
+                    </span>
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Users Management"
+                    to="/dashboard/users-management"
+                  >
+                    <RiUserSearchFill />
+                    <span className="is-drawer-close:hidden">
+                      Users Management
+                    </span>
+                  </NavLink>
+                </li>
+              </>
+            )}
 
             {/* List item */}
             <li>
