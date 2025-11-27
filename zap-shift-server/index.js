@@ -5,7 +5,6 @@ const port = process.env.PORT || 3000;
 require("dotenv").config();
 // MongoDb
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
-const { ObjectId } = require("mongodb");
 const crypto = require("crypto");
 
 // firebase admin SDK and others are okay
@@ -78,6 +77,21 @@ async function run() {
     const parcelCollection = db.collection("parcels");
     const paymentCollection = db.collection("payments");
     const ridersCollection = db.collection("riders");
+    const trackingsCollection = db.collection("trackings");
+
+    // function
+
+    const logTracking = async (trackingId, status) => {
+      const log = {
+        trackingId,
+        status,
+        details: status.split("_").join(" "),
+        createdAt: new Date(),
+      };
+
+      const result = await trackingsCollection.insertOne(log);
+      return result;
+    };
 
     // User related APIS
 
@@ -178,6 +192,26 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/parcels/rider", async (req, res) => {
+      const { riderEmail, deliveryStatus } = req.query;
+
+      const query = {};
+      if (riderEmail) {
+        query.riderEmail = riderEmail;
+      }
+
+      if (deliveryStatus !== "parcel_delivered") {
+        // query.deliveryStatus = { $in: ["driver_assigned", "rider_arriving"] };
+        query.deliveryStatus = { $nin: ["parcel_delivered"] };
+      } else {
+        query.deliveryStatus = deliveryStatus;
+      }
+
+      const cursor = parcelCollection.find(query);
+      const result = cursor.toArray();
+      res.send(result);
+    });
+
     app.get("/parcels/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
@@ -187,15 +221,49 @@ async function run() {
 
     app.post("/parcels", async (req, res) => {
       const parcel = req.body;
+      const trackingId = generateTrackingId();
       // parcel created time
       parcel.createdAt = new Date();
-
+      parcel.trackingId = trackingId;
+      logTracking(trackingId, "parcel_created");
       const result = await parcelCollection.insertOne(parcel);
       res.send(result);
     });
 
+    app.patch("/parcels/:id/status", async (req, res) => {
+      const { deliveryStatus, riderId, trackingId } = req.body;
+
+      const query = { _id: new ObjectId(req.params.id) };
+
+      const updatedDoc = {
+        $set: {
+          deliveryStatus: deliveryStatus,
+        },
+      };
+
+      if (deliveryStatus === "parcel_delivered") {
+        const riderQuery = { _id: new ObjectId(riderId) };
+        const riderUpdatedDoc = {
+          $set: {
+            workStatus: "available",
+          },
+        };
+
+        const riderResult = await ridersCollection.updateOne(
+          riderQuery,
+          riderUpdatedDoc
+        );
+      }
+
+      const result = await parcelCollection.updateOne(query, updatedDoc);
+      // Logtracking
+      logTracking(trackingId, deliveryStatus);
+
+      res.send(result);
+    });
+
     app.patch("parcels/:id", async (req, res) => {
-      const { riderId, riderName, riderEmail } = req.body;
+      const { riderId, riderName, riderEmail, trackingId } = req.body;
 
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
@@ -223,6 +291,10 @@ async function run() {
         riderQuery,
         riderUpdatedDoc
       );
+
+      //Log
+
+      logTracking(trackingId, "driver-assigned");
 
       res.send(riderResult);
     });
@@ -296,7 +368,6 @@ async function run() {
           $set: {
             paymentStatus: "paid",
             deliveryStatus: "peding-pickup",
-            trackingId: trackingId,
           },
         };
 
@@ -313,9 +384,13 @@ async function run() {
           paidAt: new Date(),
           trackingId: trackingId,
         };
+        // const trackingId = session.metadata.trackingId
 
         if (session.payment_status === "paid") {
           const resultPayment = await paymentCollection.insertOne(payment);
+
+          logTracking(trackingId, "parcel_paid");
+
           res.send({
             success: true,
             modifyParcel: result,
@@ -410,6 +485,15 @@ async function run() {
           updateUser
         );
       }
+      res.send(result);
+    });
+
+    // tracking realted apis
+
+    app.get("/trackings/:trackingId/logs", async (req, res) => {
+      const trackingId = req.params.trackingId;
+      const query = { trackingId };
+      const result = await trackingsCollection.find(query).toArray();
       res.send(result);
     });
 

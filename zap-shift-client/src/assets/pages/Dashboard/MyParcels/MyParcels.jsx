@@ -6,7 +6,7 @@ import { FiEdit } from "react-icons/fi";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { FaTrashCan } from "react-icons/fa6";
 import Swal from "sweetalert2";
-import { Link } from "react-router";
+import { Link, Links } from "react-router";
 const MyParcels = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
@@ -117,7 +117,9 @@ const MyParcels = () => {
                     </Link>
                   )}
                 </td>
-                <td>{parcel.trackingId}</td>
+                <td to={`parcel-track/${parcel.trackingId}`}>
+                  <Link>{parcel.trackingId}</Link>
+                </td>
                 <td>{parcel.deliveryStatus}</td>
                 <td>
                   <button className="btn btn-square hover:bg-primary">

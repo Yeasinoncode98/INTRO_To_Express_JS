@@ -6,6 +6,8 @@ import { FaCreditCard } from "react-icons/fa6";
 import { RiUserSearchFill } from "react-icons/ri";
 import useRole from "../Hooks/useRole";
 import { RiMotorbikeFill } from "react-icons/ri";
+import { MdOutlineTaskAlt } from "react-icons/md";
+import { FaTasks } from "react-icons/fa";
 const DashBoardLayout = () => {
   const { role } = useRole();
   return (
@@ -97,6 +99,38 @@ const DashBoardLayout = () => {
                 <span className="is-drawer-close:hidden">Payment History</span>
               </NavLink>
             </li>
+
+            {role === "rider" && (
+              <>
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Assigned Deliveries"
+                    to="/dashboard/assigned-deliveries"
+                  >
+                    <MdOutlineTaskAlt />
+                    <span className="is-drawer-close:hidden">
+                      Assigned Deliveries
+                    </span>
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Copmpleted Deliveries"
+                    to="/dashboard/completed-deliveries"
+                  >
+                    <FaTasks />
+                    <span className="is-drawer-close:hidden">
+                      Copmpleted Deliveries
+                    </span>
+                  </NavLink>
+                </li>
+              </>
+            )}
+
+            {/* Admin Only Links*/}
 
             {role === "admin" && (
               <>

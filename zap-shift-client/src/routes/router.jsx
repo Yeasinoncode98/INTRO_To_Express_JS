@@ -18,6 +18,10 @@ import ApproveRiders from "../assets/pages/Dashboard/ApproveRiders/ApproveRIders
 import UsersManagement from "../assets/pages/Dashboard/UsersManagement/UsersManagement";
 import AdminRoute from "./AdminRoute";
 import AssignRiders from "../assets/pages/Dashboard/AssignRiders/AssignRiders";
+import RiderRoute from "./RiderRoute";
+import AssignedDeliveries from "../assets/pages/Dashboard/AssignedDeliveries/AssignedDeliveries";
+import CompletedDeliveries from "../assets/pages/Dashboard/CompletedDeliveries/CompletedDeliveries";
+import ParcelTrack from "../assets/pages/Dashboard/ParcelTrack/ParcelTrack";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +36,10 @@ export const router = createBrowserRouter([
         path: "/coverage",
         Component: Coverage,
         loader: () => fetch("/serviceCenter.json").then((res) => res.json()),
+      },
+      {
+        path: "parcel-track/:trackingId",
+        Component: ParcelTrack,
       },
       {
         path: "/rider",
@@ -95,6 +103,27 @@ export const router = createBrowserRouter([
         path: "payment-cancelled",
         Component: Paymentcancelled,
       },
+
+      // Rider only Routes
+
+      {
+        path: "/assigned-deliveries",
+        element: (
+          <RiderRoute>
+            <AssignedDeliveries></AssignedDeliveries>
+          </RiderRoute>
+        ),
+      },
+      {
+        path: "/completed-deliveries",
+        element: (
+          <RiderRoute>
+            <CompletedDeliveries></CompletedDeliveries>
+          </RiderRoute>
+        ),
+      },
+      // Admin only routes
+
       {
         path: "approve-riders",
         element: (

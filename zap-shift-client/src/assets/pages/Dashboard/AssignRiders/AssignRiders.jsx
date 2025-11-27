@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useRef, useState } from "react";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
-import axios, { AxiosError } from "axios";
 import Swal from "sweetalert2";
 
 const AssignRiders = () => {
@@ -42,6 +41,7 @@ const AssignRiders = () => {
       riderEmail: rider.email,
       riderName: rider.name,
       parcelId: selectedParcel._id,
+      trackingId: selectedParcel.trackingId,
     };
 
     axiosSecure

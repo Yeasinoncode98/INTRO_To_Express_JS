@@ -1,13 +1,11 @@
-import React from "react";
 import useAuth from "../Hooks/useAuth";
 import useRole from "../Hooks/useRole";
-import Forbidden from "../Components/Forbidden";
 
-const AdminRoute = ({ children }) => {
-  const {  loading } = useAuth();
+const RiderRoute = ({ Children }) => {
+  const { loading, user } = useAuth();
 
   const { role, roleLoading } = useRole();
-  if (loading || roleLoading) {
+  if (loading || !user || roleLoading) {
     return (
       <div>
         <span className="loading loading-infinity loading-xl"></span>
@@ -15,11 +13,11 @@ const AdminRoute = ({ children }) => {
     );
   }
 
-  if (role !== "admin") {
+  if (role !== "rider") {
     return <Forbidden></Forbidden>;
   }
 
-  return children;
+  return Children;
 };
 
-export default AdminRoute;
+export default RiderRoute;
