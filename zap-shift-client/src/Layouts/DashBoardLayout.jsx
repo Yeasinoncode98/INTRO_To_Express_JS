@@ -8,6 +8,7 @@ import useRole from "../Hooks/useRole";
 import { RiMotorbikeFill } from "react-icons/ri";
 import { MdOutlineTaskAlt } from "react-icons/md";
 import { FaTasks } from "react-icons/fa";
+import LogoImg from "../assets/logo.png";
 const DashBoardLayout = () => {
   const { role } = useRole();
   return (
@@ -52,10 +53,16 @@ const DashBoardLayout = () => {
         <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
           {/* Sidebar content here */}
           <ul className="menu w-full grow">
+            <li>
+              <Link to="/">
+                <img src={LogoImg} alt="" />
+              </Link>
+            </li>
+
             {/* List item */}
             <li>
               <Link
-                to="/"
+                to="/dashboard"
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Homepage"
               >

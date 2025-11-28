@@ -22,7 +22,7 @@ const Coverage = () => {
   };
 
   return (
-    <div>
+    <div className="p-8">
       <h2 className="text-5xl">We are available in 64 Districts</h2>
       <div>
         {/* Search */}

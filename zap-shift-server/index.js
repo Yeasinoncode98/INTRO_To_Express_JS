@@ -192,6 +192,27 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/parcels/delivery-status/stats", async (req, res) => {
+      const pipeline = [
+        {
+          $group: {
+            _id: "$deliveryStatus",
+            count: { $sum: 1 },
+          },
+        },
+        {
+          $project: {
+            status: "$_id",
+            count: 1,
+            // _id: 0,
+          },
+        },
+      ];
+
+      const result = await parcelCollection.aggregate(pipeline).toArray();
+      res.send(result);
+    });
+
     app.get("/parcels/rider", async (req, res) => {
       const { riderEmail, deliveryStatus } = req.query;
 
@@ -445,6 +466,41 @@ async function run() {
 
       const cursor = ridersCollection.find(query);
       const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // Riders DashBoard
+
+    app.get("riders/delivery-per-day", async (req, res) => {
+      const email = req.query.email;
+      // aggregate on parcel
+
+      const pipeline = [
+        {
+          $match: {
+            riderEmail: email,
+            deliveryStatus: "parcel_delivered",
+          },
+        },
+        {
+          $lookup: {
+            from: "trackings",
+            localField: "trackingId",
+            foreignField: "trackingId",
+            as: "parcel_trackings",
+          },
+        },
+        {
+          $unwind: "$parcel_trackings",
+        },
+        {
+          $match: {
+            "parcel_trackings.status": "parcel_delivered",
+          },
+        },
+      ];
+
+      const result = await parcelCollection.aggregate(pipeline).toArray();
       res.send(result);
     });
 
